@@ -1,15 +1,19 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TinderCard from 'react-tinder-card';
 import '../css/TinderCards.css';
+import axios from '../helper/axios';
 
 function TinderCards() {
-    const [people, setPeople] = useState([
-        {
-            name: 'John Doe',
-            profile_img:
-                'https://pbs.twimg.com/profile_images/1306313760794120192/bQhpQLRC_400x400.jpg',
-        },
-    ]);
+    const [people, setPeople] = useState([]);
+
+    useEffect(() => {
+        async function fetchPeople() {
+            const req = await axios.get('/tinder/cards');
+
+            setPeople(req.data);
+        }
+        fetchPeople();
+    }, []);
 
     const swipeHandler = (direction, name) => {
         console.log('removing: ' + name);
